@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/todos/{todo}/edit',  [TodoController::class, 'edit'])->name('todos.edit');
     Route::put('/todos/{todo}/update',[TodoController::class, 'update'])->name('todos.update');
     Route::delete('/todos/{todo}/delete', [TodoController::class, 'destroy'])->name('todos.destroy');
+
+    // Category CRUD
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{category}/update', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}/delete', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');

@@ -39,6 +39,14 @@ class User extends Authenticatable
     }
 
     /**
+     * A user has many categories.
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    /**
      * A user has many completed task histories.
      */
     public function completedTaskHistories()

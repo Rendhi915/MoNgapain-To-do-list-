@@ -7,6 +7,7 @@ use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class TodoController extends Controller
 {
@@ -15,7 +16,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Auth::user()->todos()->latest()->get();
+        $todos = Auth::user()->todos()->with('category')->latest()->get();
         return view('todos.index', compact('todos'));
     }
 
@@ -24,7 +25,9 @@ class TodoController extends Controller
      */
     public function create()
     {
-        return view('todos.create');
+        $categories = Auth::user()->categories()->orderBy('name')->get();
+
+        return view('todos.create', compact('categories'));
     }
 
     /**
@@ -33,10 +36,15 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'category_id' => [
+                'nullable',
+                Rule::exists('categories', 'id')->where(fn ($query) => $query->where('user_id', Auth::id())),
+            ],
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:2000'],
             'status'      => ['required', 'in:pending,completed'],
         ], [
+            'category_id.exists' => 'Kategori tidak valid.',
             'title.required' => 'Judul tugas wajib diisi.',
             'title.max' => 'Judul tugas maksimal 255 karakter.',
             'description.max' => 'Deskripsi maksimal 2000 karakter.',
@@ -71,7 +79,9 @@ class TodoController extends Controller
         // Ensure the authenticated user owns this todo
         abort_if($todo->user_id !== Auth::id(), 403);
 
-        return view('todos.edit', compact('todo'));
+        $categories = Auth::user()->categories()->orderBy('name')->get();
+
+        return view('todos.edit', compact('todo', 'categories'));
     }
 
     /**
@@ -82,10 +92,15 @@ class TodoController extends Controller
         abort_if($todo->user_id !== Auth::id(), 403);
 
         $validated = $request->validate([
+            'category_id' => [
+                'nullable',
+                Rule::exists('categories', 'id')->where(fn ($query) => $query->where('user_id', Auth::id())),
+            ],
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:2000'],
             'status'      => ['required', 'in:pending,completed'],
         ], [
+            'category_id.exists' => 'Kategori tidak valid.',
             'title.required' => 'Judul tugas wajib diisi.',
             'title.max' => 'Judul tugas maksimal 255 karakter.',
             'description.max' => 'Deskripsi maksimal 2000 karakter.',

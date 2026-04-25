@@ -35,6 +35,38 @@
             @csrf
             @method('PUT')
 
+            {{-- Category --}}
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block font-label-md text-label-md text-on-surface-variant" for="category_id">
+                        Kategori <span class="text-outline font-normal">(opsional)</span>
+                    </label>
+                    <a href="{{ route('categories.create') }}" class="text-sm text-primary-container hover:underline">
+                        + Buat Kategori
+                    </a>
+                </div>
+                <div class="relative">
+                    <select class="w-full appearance-none px-4 py-3 pr-10 bg-surface-bright border border-surface-variant
+                                   rounded-lg font-body-md text-body-md text-on-background
+                                   focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container
+                                   transition-colors duration-200"
+                            id="category_id" name="category_id">
+                        <option value="">Tanpa Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ (string) old('category_id', $todo->category_id) === (string) $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[20px]">expand_more</span>
+                    </div>
+                </div>
+                @error('category_id')
+                    <p class="mt-1 text-sm text-error">{{ $message }}</p>
+                @enderror
+            </div>
+
             {{-- Title --}}
             <div>
                 <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="title">

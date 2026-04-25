@@ -93,6 +93,17 @@
                         </p>
                     @endif
 
+                    {{-- Category Badge --}}
+                    @if ($todo->category)
+                        <div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
+                                  style="background-color: {{ $todo->category->color }}20; color: {{ $todo->category->color }}; border: 1px solid {{ $todo->category->color }}55;">
+                                <span class="inline-block w-2 h-2 rounded-full" style="background-color: {{ $todo->category->color }};"></span>
+                                {{ $todo->category->name }}
+                            </span>
+                        </div>
+                    @endif
+
                     {{-- Card Footer: Date + Quick Toggle --}}
                     <div class="mt-auto pt-4 flex items-center justify-between border-t border-surface-container-high">
                         <span class="font-label-sm text-label-sm text-outline">

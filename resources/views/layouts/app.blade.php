@@ -145,6 +145,14 @@
                 <span class="font-body-sm text-body-sm">Tugas Selesai</span>
             </a>
 
+        <a href="{{ route('categories.index') }}"
+           class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all cursor-pointer
+                {{ request()->routeIs('categories.*') ? 'bg-primary-fixed/20 text-primary-container font-semibold' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+            <span class="material-symbols-outlined text-[20px]"
+                style="{{ request()->routeIs('categories.*') ? 'font-variation-settings:\'FILL\' 1' : '' }}">label</span>
+            <span class="font-body-sm text-body-sm">Kategori</span>
+        </a>
+
             <a href="{{ route('settings.index') }}"
                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all cursor-pointer
                       {{ request()->routeIs('settings.*') ? 'bg-primary-fixed/20 text-primary-container font-semibold' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
